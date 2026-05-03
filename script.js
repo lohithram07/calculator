@@ -3,11 +3,9 @@ let display = document.getElementById("display");
 function appendValue(value) {
   if (value === '.') {
     let parts = display.value.split(/[\+\-\*\/]/);
-    let lastNumber = parts[parts.length - 1];
-
-    if (lastNumber.includes('.')) return;
+    let last = parts[parts.length - 1];
+    if (last.includes('.')) return;
   }
-
   display.value += value;
 }
 
@@ -21,7 +19,10 @@ function backspace() {
 
 function percentage() {
   try {
-    display.value = eval(display.value) / 100;
+    let parts = display.value.split(/([\+\-\*\/])/);
+    let last = parts.pop();
+    let result = parseFloat(last) / 100;
+    display.value = parts.join('') + result;
   } catch {
     display.value = "Error";
   }

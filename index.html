@@ -2,15 +2,23 @@
 <html>
 <head>
   <title>Calculator</title>
+
+  <!-- IMPORTANT FOR MOBILE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
   <div class="calculator">
+    
+    <!-- DISPLAY -->
     <input type="text" id="display" disabled>
 
+    <!-- BUTTONS -->
     <div class="buttons">
+
       <button class="btn clear" onclick="clearDisplay()">C</button>
       <button class="btn operator" onclick="appendValue('/')">÷</button>
       <button class="btn operator" onclick="appendValue('*')">×</button>
@@ -31,6 +39,7 @@
       <button class="btn" onclick="appendValue('3')">3</button>
 
       <button class="btn zero" onclick="appendValue('0')">0</button>
+
     </div>
   </div>
 

@@ -1,9 +1,12 @@
 let display = document.getElementById("display");
 let buttons = document.querySelectorAll(".btn");
 
-/* BUTTON CLICK */
+/* BUTTON CLICK (FIXED) */
 buttons.forEach(btn => {
-  btn.addEventListener("click", () => handleInput(btn.innerText));
+  btn.addEventListener("click", () => {
+    let value = btn.getAttribute("data-value");
+    handleInput(value);
+  });
 });
 
 /* KEYBOARD SUPPORT */
@@ -13,21 +16,20 @@ document.addEventListener("keydown", (e) => {
   if (key === "Enter") key = "=";
   if (key === "Backspace") key = "⌫";
   if (key === "Escape") key = "C";
-  if (key === "*") key = "*";
-  if (key === "/") key = "/";
 
   handleInput(key);
 });
 
-/* MAIN FUNCTION */
+/* MAIN LOGIC */
 function handleInput(value) {
 
+  if (!value) return;
+
   if (!isNaN(value) || value === ".") {
-    if (value === "." && display.value.includes(".")) return;
     display.value += value;
   }
 
-  else if (value === "+" || value === "-" || value === "*" || value === "/") {
+  else if (["+", "-", "*", "/"].includes(value)) {
     display.value += value;
   }
 
@@ -64,11 +66,10 @@ function handleInput(value) {
   }
 }
 
-/* REAL TIME CLOCK */
+/* CLOCK */
 function updateClock() {
   let now = new Date();
-  let time = now.toLocaleTimeString();
-  document.getElementById("clock").innerText = time;
+  document.getElementById("clock").innerText = now.toLocaleTimeString();
 }
 
 setInterval(updateClock, 1000);

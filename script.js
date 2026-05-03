@@ -1,45 +1,75 @@
 let display = document.getElementById("display");
+let buttons = document.querySelectorAll(".btn");
 
-function appendValue(value) {
-  if (value === '.') {
-    let parts = display.value.split(/[\+\-\*\/]/);
-    let last = parts[parts.length - 1];
-    if (last.includes('.')) return;
+/* BUTTON CLICK */
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => handleInput(btn.innerText));
+});
+
+/* KEYBOARD SUPPORT */
+document.addEventListener("keydown", (e) => {
+  let key = e.key;
+
+  if (key === "Enter") key = "=";
+  if (key === "Backspace") key = "⌫";
+  if (key === "Escape") key = "C";
+  if (key === "*") key = "*";
+  if (key === "/") key = "/";
+
+  handleInput(key);
+});
+
+/* MAIN FUNCTION */
+function handleInput(value) {
+
+  if (!isNaN(value) || value === ".") {
+    if (value === "." && display.value.includes(".")) return;
+    display.value += value;
   }
-  display.value += value;
-}
 
-function clearDisplay() {
-  display.value = "";
-}
+  else if (value === "+" || value === "-" || value === "*" || value === "/") {
+    display.value += value;
+  }
 
-function backspace() {
-  display.value = display.value.slice(0, -1);
-}
+  else if (value === "C") {
+    display.value = "";
+  }
 
-function percentage() {
-  try {
-    let parts = display.value.split(/([\+\-\*\/])/);
-    let last = parts.pop();
-    let result = parseFloat(last) / 100;
-    display.value = parts.join('') + result;
-  } catch {
-    display.value = "Error";
+  else if (value === "⌫") {
+    display.value = display.value.slice(0, -1);
+  }
+
+  else if (value === "=") {
+    try {
+      display.value = eval(display.value);
+    } catch {
+      display.value = "Error";
+    }
+  }
+
+  else if (value === "%") {
+    try {
+      display.value = eval(display.value) / 100;
+    } catch {
+      display.value = "Error";
+    }
+  }
+
+  else if (value === "√") {
+    try {
+      display.value = Math.sqrt(eval(display.value));
+    } catch {
+      display.value = "Error";
+    }
   }
 }
 
-function squareRoot() {
-  try {
-    display.value = Math.sqrt(eval(display.value));
-  } catch {
-    display.value = "Error";
-  }
+/* REAL TIME CLOCK */
+function updateClock() {
+  let now = new Date();
+  let time = now.toLocaleTimeString();
+  document.getElementById("clock").innerText = time;
 }
 
-function calculate() {
-  try {
-    display.value = eval(display.value);
-  } catch {
-    display.value = "Error";
-  }
-}
+setInterval(updateClock, 1000);
+updateClock();
